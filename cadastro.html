@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Voluntário - ONG Esperança Viva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="imagens/logo.png" alt="Logo da ONG Esperança Viva" width="200">
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="cadastro.html">Seja Voluntário</a></li>
+        <li><a href="doacao.html">Doe Agora</a></li>
+        <li><a href="login.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Cadastro de Voluntário</h1>
+    <form id="formVoluntario">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <label for="projetos">Projetos de interesse:</label>
+      <input type="text" id="projetos" placeholder="Ex: Mãos Amigas, Educar para o Futuro">
+
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p id="mensagem" style="color:green;margin-top:10px;"></p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ONG Esperança Viva — Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    const formVol = document.getElementById('formVoluntario');
+    const msg = document.getElementById('mensagem');
+
+    formVol.addEventListener('submit', function(e){
+      e.preventDefault();
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const projetos = document.getElementById('projetos').value.split(',').map(p => p.trim()).filter(p => p);
+
+      if(!nome || !email) return alert('Preencha todos os campos obrigatórios');
+
+      const voluntarios = JSON.parse(localStorage.getItem('voluntarios')) || [];
+      voluntarios.push({nome,email,projetos});
+      localStorage.setItem('voluntarios', JSON.stringify(voluntarios));
+
+      msg.textContent = 'Cadastro realizado com sucesso!';
+      formVol.reset();
+    });
+  </script>
+</body>
+</html>

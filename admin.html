@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - ONG Esperança Viva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="imagens/logo.png" alt="Logo da ONG Esperança Viva" width="200">
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="cadastro.html">Seja Voluntário</a></li>
+        <li><a href="doacao.html">Doe Agora</a></li>
+        <!-- Substituindo "Admin" pelos dois projetos -->
+        <li><a href="#projeto_maos_amigas">Mãos Amigas</a></li>
+        <li><a href="#projeto_educar">Educar para o Futuro</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Painel Administrativo</h1>
+
+    <!-- Seções e tabelas do painel continuam aqui -->
+    <section id="voluntarios">
+      <h2>Voluntários Cadastrados</h2>
+      <table id="tabelaVoluntarios">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Projetos</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Voluntários serão carregados via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <section id="doacoes">
+      <h2>Doações Recebidas</h2>
+      <table id="tabelaDoacoes">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Valor</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Doações serão carregadas via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Seções dos projetos -->
+    <section id="projeto_maos_amigas">
+      <h2>Projeto Mãos Amigas</h2>
+      <p>Detalhes e informações do projeto Mãos Amigas...</p>
+    </section>
+
+    <section id="projeto_educar">
+      <h2>Educar para o Futuro</h2>
+      <p>Detalhes e informações do projeto Educar para o Futuro...</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ONG Esperança Viva — Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>

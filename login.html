@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin - ONG Esperança Viva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section style="max-width:400px;margin:50px auto;">
+      <h1>Login Administrador</h1>
+      <form id="loginForm">
+        <label for="user">Usuário:</label>
+        <input type="text" id="user" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" required>
+
+        <button type="submit">Entrar</button>
+      </form>
+      <p id="msgLogin" style="color:red;margin-top:10px;"></p>
+    </section>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const msgLogin = document.getElementById('msgLogin');
+
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = '1234';
+
+    loginForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const user = document.getElementById('user').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+
+      if(user === ADMIN_USER && senha === ADMIN_PASS){
+        localStorage.setItem('logado','true');
+        window.location.href = 'admin.html';
+      } else {
+        msgLogin.textContent = 'Usuário ou senha incorretos!';
+      }
+    });
+  </script>
+</body>
+</html>
