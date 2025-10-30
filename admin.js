@@ -1,82 +1,81 @@
-/* =====================================================
-   ONG Esperança Viva - script.js
-   - Menu responsivo (hamburger)
-   - Dropdown acessível
-   - Toasts e modal de feedback
-   ===================================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
-  const $ = sel => document.querySelector(sel);
-  const $$ = sel => document.querySelectorAll(sel);
+  const tabelaVol = document.querySelector('#tabelaVoluntarios tbody');
+  const tabelaDoacoes = document.querySelector('#tabelaDoacoes tbody');
 
-  /* ===== MENU MOBILE ===== */
-  const hamburger = $('.hamburger');
-  const mobilePanel = $('.mobile-panel');
+  // === VOLUNTÁRIOS ===
+  const voluntarios = JSON.parse(localStorage.getItem('voluntarios')) || [];
 
-  if (hamburger && mobilePanel) {
-    hamburger.addEventListener('click', () => {
-      const aberto = mobilePanel.getAttribute('aria-hidden') === 'false';
-      mobilePanel.setAttribute('aria-hidden', aberto ? 'true' : 'false');
-      hamburger.setAttribute('aria-expanded', !aberto);
-    });
-
-    mobilePanel.addEventListener('click', (e) => {
-      if (e.target === mobilePanel) {
-        mobilePanel.setAttribute('aria-hidden', 'true');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
+  function carregarVoluntarios() {
+    tabelaVol.innerHTML = '';
+    voluntarios.forEach((v, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${v.nome}</td>
+        <td>${v.email}</td>
+        <td>${v.projetos.join(', ')}</td>
+        <td>
+          <button class="removerVol" data-i="${i}">Remover</button>
+          <button class="certificadoVol" data-i="${i}">Certificado</button>
+        </td>
+      `;
+      tabelaVol.appendChild(tr);
     });
   }
 
-  /* ===== DROPDOWN ===== */
-  $$('.has-dropdown').forEach(item => {
-    const trigger = item.querySelector('a');
-    const menu = item.querySelector('.dropdown');
-    trigger.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const aberto = menu.style.display === 'block';
-        menu.style.display = aberto ? 'none' : 'block';
-      }
-    });
-  });
-
-  /* ===== TOASTS ===== */
-  window.showToast = (msg, tempo = 3000) => {
-    let container = document.querySelector('.toasts');
-    if (!container) {
-      container = document.createElement('div');
-      container.className = 'toasts';
-      document.body.appendChild(container);
+  tabelaVol.addEventListener('click', e => {
+    if (e.target.classList.contains('removerVol')) {
+      const i = e.target.dataset.i;
+      voluntarios.splice(i, 1);
+      localStorage.setItem('voluntarios', JSON.stringify(voluntarios));
+      carregarVoluntarios();
     }
 
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = msg;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 300);
-    }, tempo);
-  };
-
-  /* ===== FORMULÁRIOS (feedback visual) ===== */
-  $$('form').forEach(form => {
-    form.addEventListener('submit', e => {
-      const invalid = form.querySelector(':invalid');
-      if (invalid) {
-        e.preventDefault();
-        invalid.classList.add('is-error');
-        invalid.focus();
-        showToast('Preencha corretamente os campos obrigatórios!');
-      }
-    });
-
-    form.addEventListener('input', e => {
-      if (e.target.classList.contains('is-error') && e.target.checkValidity()) {
-        e.target.classList.remove('is-error');
-      }
-    });
+    if (e.target.classList.contains('certificadoVol')) {
+      const v = voluntarios[e.target.dataset.i];
+      gerarCertificado(v);
+    }
   });
+
+  // === DOAÇÕES ===
+  const doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
+
+  function carregarDoacoes() {
+    tabelaDoacoes.innerHTML = '';
+    doacoes.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d.nome}</td>
+        <td>${d.email}</td>
+        <td>R$ ${Number(d.valor).toFixed(2)}</td>
+        <td>${d.data}</td>
+      `;
+      tabelaDoacoes.appendChild(tr);
+    });
+  }
+
+  // === GERAÇÃO DE CERTIFICADO SIMPLES ===
+  function gerarCertificado(v) {
+    const novaJanela = window.open('', '_blank');
+    novaJanela.document.write(`
+      <html>
+      <head><title>Certificado de Voluntariado</title></head>
+      <body style="font-family: Arial; text-align:center; padding:40px;">
+        <h1>Certificado de Voluntariado</h1>
+        <p>Certificamos que <strong>${v.nome}</strong></p>
+        <p>participou como voluntário(a) nos projetos:</p>
+        <p><em>${v.projetos.join(', ')}</em></p>
+        <p>ONG Esperança Viva — ${new Date().getFullYear()}</p>
+        <br><br>
+        <p>__________________________</p>
+        <p>Assinatura da Coordenação</p>
+      </body>
+      </html>
+    `);
+    novaJanela.document.close();
+    novaJanela.print();
+  }
+
+  // === INICIALIZAÇÃO ===
+  carregarVoluntarios();
+  carregarDoacoes();
 });
