@@ -4,20 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Admin - ONG Esperança Viva</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main>
+  <main class="container">
     <section style="max-width:400px;margin:50px auto;">
-      <h1>Login Administrador</h1>
-      <form id="loginForm">
-        <label for="user">Usuário:</label>
-        <input type="text" id="user" required>
-
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" required>
-
-        <button type="submit">Entrar</button>
+      <h1 class="h1">Login Administrador</h1>
+      <form class="form" id="loginForm">
+        <label for="user">Usuário</label>
+        <input type="text" id="user" class="input" required>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" class="input" required>
+        <button type="submit" class="btn">Entrar</button>
       </form>
       <p id="msgLogin" style="color:red;margin-top:10px;"></p>
     </section>
@@ -26,16 +24,13 @@
   <script>
     const loginForm = document.getElementById('loginForm');
     const msgLogin = document.getElementById('msgLogin');
-
     const ADMIN_USER = 'admin';
     const ADMIN_PASS = '1234';
-
-    loginForm.addEventListener('submit', function(e){
+    loginForm.addEventListener('submit', e => {
       e.preventDefault();
       const user = document.getElementById('user').value.trim();
       const senha = document.getElementById('senha').value.trim();
-
-      if(user === ADMIN_USER && senha === ADMIN_PASS){
+      if (user === ADMIN_USER && senha === ADMIN_PASS) {
         localStorage.setItem('logado','true');
         window.location.href = 'admin.html';
       } else {
@@ -43,5 +38,6 @@
       }
     });
   </script>
+  <script src="js/script.js"></script>
 </body>
 </html>
