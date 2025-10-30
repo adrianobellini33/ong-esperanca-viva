@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cadastro Voluntário - ONG Esperança Viva</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <img src="imagens/logo.png" alt="Logo da ONG Esperança Viva" width="200">
-    <nav>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="projetos.html">Projetos</a></li>
-        <li><a href="cadastro.html">Seja Voluntário</a></li>
-        <li><a href="doacao.html">Doe Agora</a></li>
-        <li><a href="login.html">Admin</a></li>
-      </ul>
-    </nav>
+  <header class="header" role="banner">
+    <div class="container">
+      <a href="index.html" class="brand" aria-label="Início - ONG Esperança Viva">
+        <img src="imagens/logo.png" alt="Logo ONG Esperança Viva">
+      </a>
+
+      <nav class="nav" role="navigation" aria-label="Menu principal">
+        <ul role="menubar">
+          <li role="none"><a role="menuitem" href="index.html">Início</a></li>
+          <li role="none"><a role="menuitem" href="projetos.html">Projetos</a></li>
+          <li role="none"><a role="menuitem" href="cadastro.html">Seja Voluntário</a></li>
+          <li role="none"><a role="menuitem" href="doacao.html">Doe Agora</a></li>
+          <li role="none"><a role="menuitem" href="login.html">Admin</a></li>
+        </ul>
+      </nav>
+
+      <button class="hamburger" aria-label="Abrir menu" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
   </header>
 
-  <main>
-    <h1>Cadastro de Voluntário</h1>
-    <form id="formVoluntario">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" required>
+  <main class="container" role="main">
+    <section style="max-width:720px;margin:0 auto">
+      <h1 class="h1">Cadastro de Voluntário</h1>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" required>
+      <form class="form" id="formVoluntario">
+        <label for="nome">Nome</label>
+        <input id="nome" class="input" type="text" required>
 
-      <label for="projetos">Projetos de interesse:</label>
-      <input type="text" id="projetos" placeholder="Ex: Mãos Amigas, Educar para o Futuro">
+        <label for="email">Email</label>
+        <input id="email" class="input" type="email" required>
 
-      <button type="submit">Cadastrar</button>
-    </form>
-    <p id="mensagem" style="color:green;margin-top:10px;"></p>
+        <label for="projetos">Projetos de interesse</label>
+        <input id="projetos" class="input" type="text" placeholder="Ex: Mãos Amigas, Educar para o Futuro">
+
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:12px">
+          <button type="reset" class="btn btn-secondary">Limpar</button>
+          <button type="submit" class="btn">Cadastrar</button>
+        </div>
+      </form>
+
+      <p id="mensagem" style="color:var(--color-accent);margin-top:12px;"></p>
+    </section>
   </main>
 
   <footer>
     <p>&copy; 2025 ONG Esperança Viva — Todos os direitos reservados.</p>
   </footer>
 
+  <script src="js/script.js"></script>
   <script>
+    // Lógica de armazenamento local (já existente) — mantém comportamento original adaptado ao design
     const formVol = document.getElementById('formVoluntario');
     const msg = document.getElementById('mensagem');
 
@@ -49,17 +67,28 @@
       e.preventDefault();
       const nome = document.getElementById('nome').value.trim();
       const email = document.getElementById('email').value.trim();
-      const projetos = document.getElementById('projetos').value.split(',').map(p => p.trim()).filter(p => p);
+      const projetos = document.getElementById('projetos').value
+                        .split(',')
+                        .map(p => p.trim())
+                        .filter(p => p);
 
-      if(!nome || !email) return alert('Preencha todos os campos obrigatórios');
+      if(!nome || !email){
+        // show visual feedback
+        document.getElementById('nome').classList.add('is-error');
+        document.getElementById('email').classList.add('is-error');
+        showToast('Preencha os campos obrigatórios');
+        return;
+      }
 
       const voluntarios = JSON.parse(localStorage.getItem('voluntarios')) || [];
       voluntarios.push({nome,email,projetos});
       localStorage.setItem('voluntarios', JSON.stringify(voluntarios));
 
       msg.textContent = 'Cadastro realizado com sucesso!';
+      showToast('Obrigado por se cadastrar como voluntário!');
       formVol.reset();
     });
   </script>
 </body>
 </html>
+
