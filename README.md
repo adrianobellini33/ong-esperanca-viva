@@ -61,8 +61,6 @@ ong-esperanca-viva/
 
 └── voluntarios.jpg
 
-yaml
-Copiar código
 
 ---
 
