@@ -25,25 +25,39 @@ O site permite que visitantes conheçam os **projetos sociais**, realizem **cada
 ## 🧩 Estrutura de Pastas
 
 ong-esperanca-viva/
-│
+
 ├── index.html
+
 ├── projetos.html
+
 ├── cadastro.html
+
 ├── doacao.html
+
 ├── login.html
+
 ├── admin.html
 │
 ├── css/
+
 │ └── style.css
+
 │
 ├── js/
+
 │ ├── admin.js
+
 │ └── script.js
+
 │
 └── imagens/
+
 ├── logo.png
+
 ├── projeto1.jpg
+
 ├── projeto2.jpg
+
 └── voluntarios.jpg
 
 yaml
