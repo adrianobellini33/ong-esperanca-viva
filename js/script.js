@@ -1,42 +1,43 @@
 /* =====================================================
-   ONG Esperança Viva — JavaScript Principal
+   ONG Esperança Viva — JavaScript Principal (corrigido)
    ===================================================== */
 
-// ==============================
-// FORMULÁRIOS E CADASTROS
-// ==============================
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Exemplo: Captura de formulário de cadastro de voluntário
+  // ==============================
+  // FORMULÁRIO DE VOLUNTÁRIO
+  // ==============================
   const formCadastro = document.querySelector('#form-cadastro');
   if (formCadastro) {
     formCadastro.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const nome = document.getElementById('nome').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
+      const nomeEl = document.getElementById('nome');
+      const emailEl = document.getElementById('email');
+      const telefoneEl = document.getElementById('telefone');
 
-      if (nome === '' || email === '' || telefone === '') {
+      const nome = nomeEl ? nomeEl.value.trim() : '';
+      const email = emailEl ? emailEl.value.trim() : '';
+      const telefone = telefoneEl ? telefoneEl.value.trim() : '';
+
+      if (!nome || !email || !telefone) {
         showToast('Preencha todos os campos!', 'error');
         return;
       }
 
       const voluntario = { nome, email, telefone };
-      salvarVoluntario(voluntario);
+      const lista = JSON.parse(localStorage.getItem('voluntarios')) || [];
+      lista.push(voluntario);
+      localStorage.setItem('voluntarios', JSON.stringify(lista));
+
       formCadastro.reset();
       showToast('Cadastro realizado com sucesso!', 'success');
     });
   }
 
-  // Função para salvar voluntários no localStorage
-  function salvarVoluntario(v) {
-    const lista = JSON.parse(localStorage.getItem('voluntarios')) || [];
-    lista.push(v);
-    localStorage.setItem('voluntarios', JSON.stringify(lista));
-  }
-
-  // Toast de feedback
+  // ==============================
+  // TOASTS DE FEEDBACK
+  // ==============================
   function showToast(mensagem, tipo = 'info') {
     const area = document.querySelector('.toasts') || criarAreaToasts();
     const toast = document.createElement('div');
@@ -46,10 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <button class="toast-close">&times;</button>
     `;
     area.appendChild(toast);
-
-    const fechar = toast.querySelector('.toast-close');
-    fechar.addEventListener('click', () => toast.remove());
-
+    toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
     setTimeout(() => toast.remove(), 4000);
   }
 
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==============================
-  // MENU MOBILE / HAMBURGUER
+  // MENU MOBILE / HAMBÚRGUER
   // ==============================
   const btnHamb = document.querySelector('.hamburger');
   const painelMobile = document.querySelector('.mobile-panel');
@@ -73,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==============================
-  // MODO ESCURO E ALTO CONTRASTE 🌓
+  // MODO ESCURO E ALTO CONTRASTE
   // ==============================
   if (!document.querySelector('.theme-toggle')) {
     const toggleBtn = document.createElement('button');
@@ -83,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleBtn.textContent = '🌓';
     document.body.appendChild(toggleBtn);
 
-    // Recupera o tema anterior salvo
     let currentTheme = localStorage.getItem('theme') || 'light';
     aplicarTema(currentTheme);
 
@@ -99,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('theme', currentTheme);
     });
 
-    // Ativa via teclado (Enter / Espaço)
     toggleBtn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -107,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Aplica o tema selecionado
     function aplicarTema(tema) {
       document.body.classList.remove('dark-mode', 'high-contrast');
       if (tema === 'dark') document.body.classList.add('dark-mode');
