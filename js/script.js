@@ -126,4 +126,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 });
 
-fix: corrigir nome do script para script.js
+
