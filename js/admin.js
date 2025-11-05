@@ -202,4 +202,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   carregarVoluntarios();
   carregarDoacoes();
+
+// ==============================
+// MODO ESCURO E ALTO CONTRASTE
+// ==============================
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.createElement('button');
+  toggleBtn.className = 'theme-toggle';
+  toggleBtn.setAttribute('aria-label', 'Alternar modo de contraste');
+  toggleBtn.title = 'Alternar modo de contraste (claro/escuro/alto contraste)';
+  toggleBtn.textContent = '🌓';
+  document.body.appendChild(toggleBtn);
+
+  // Recupera o tema anterior salvo
+  let currentTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(currentTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    if (currentTheme === 'light') {
+      currentTheme = 'dark';
+    } else if (currentTheme === 'dark') {
+      currentTheme = 'high';
+    } else {
+      currentTheme = 'light';
+    }
+    applyTheme(currentTheme);
+    localStorage.setItem('theme', currentTheme);
+  });
+
+  function applyTheme(theme) {
+    document.body.classList.remove('dark-mode', 'high-contrast');
+    if (theme === 'dark') document.body.classList.add('dark-mode');
+    if (theme === 'high') document.body.classList.add('high-contrast');
+  }
+});
 });
